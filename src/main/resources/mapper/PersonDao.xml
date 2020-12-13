@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enzo.dao.PersonDao">
+    <insert id="insertPersonInfo" parameterType="string">
+        insert into personinfo (personname, personareaid, personage, personaddress)
+        VALUES (#{param1}, #{param2}, #{param3}, #{param4})
+    </insert>
+    <update id="updatePersonInfo" parameterType="string">
+        update personinfo
+        set personname=#{param2},
+            personareaid=#{param3},
+            personage=#{param4},
+            personaddress=#{param5}
+        where personid = #{param1}
+    </update>
+    <delete id="deletePersonById" parameterType="int">
+        delete
+        from personinfo
+        where personid = #{personid}
+    </delete>
+    <select id="findAllPerson" resultType="map">
+        select p.*, a.areaname
+        from personinfo p
+                 inner join personarea a on p.personareaid = a.areaid
+    </select>
+    <select id="findAllPersonPage" parameterType="map" resultType="map">
+        select p.*, a.areaname
+        from personinfo p
+                 inner join personarea a on p.personareaid = a.areaid
+        order by p.personid
+        limit #{start},#{limit}
+    </select>
+    <select id="findAllArea" resultType="map">
+        select *
+        from personarea
+    </select>
+    <select id="findPersonById" parameterType="int" resultType="map">
+        select *
+        from personinfo
+        where personid = #{personid}
+    </select>
+    <select id="getRowCount" resultType="long">
+        select count(*) count
+        from personinfo
+    </select>
+</mapper>
